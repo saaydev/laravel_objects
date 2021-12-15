@@ -11,20 +11,16 @@
     <body class="container my-3">
         <div class="row">
             <div class="col-3">
-                <form method="post" action="{{ route("object-create") }}">
+                <form method="post" action="{{ route("object-article-create") }}">
+                    <input type="hidden" name="object_id" value="{{ $item->id }}">
                     @csrf
-                    <h2>Создать обьект</h2>
+                    <h2>Создать {{ $item->title }}</h2>
         
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Название обьекта</label>
+                        <label for="exampleInputEmail1" class="form-label">Название {{ $item->title }}</label>
                         <input type="text" name="title" class="form-control" id="exampleInputEmail1">
                     </div>
-        
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Тип обьекта</label>
-                        <input type="text" name="type" class="form-control" id="exampleInputPassword1">
-                        <div class="form-text">Должен быть уникальным</div>
-                    </div>
+                    
                     <button type="submit" class="btn btn-primary">Создать обьект</button>
                 </form>
             </div>
@@ -35,8 +31,6 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Название</th>
-                            <th scope="col">Тип</th>
-                            <th scope="col">Дата создания</th>
                             <th scope="col">Действия</th>
                         </tr>
                     </thead>
@@ -45,8 +39,6 @@
                             <tr>
                                 <th>{{ $item->id }}</th>
                                 <td>{{ $item->title }}</td>
-                                <td>{{ $item->type }}</td>
-                                <td>{{ $item->created_at }}</td>
                                 <td>
                                     <a href="{{ route("delete", ["id" => $item->id]) }}" class="delete">Удалить</a>
                                 </td>
@@ -60,7 +52,9 @@
                 <h4>Меню</h4>
                 <a href="/">Обьекты</a>
                 <a href="">Настройка обьектов</a>
-                <a href="">Записи обьектов</a>
+                @foreach ($menu as $item)
+                    <a href="{{ $item->get_permalink() }}">{{ $item->title }}</a>
+                @endforeach
             </div>
         </div>
     </body>

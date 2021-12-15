@@ -12,4 +12,14 @@ class Objects extends Model
         'title',
         'type',
     ];
+
+    public function get_permalink(bool $isAdmin = true){
+        return url($this->type);
+    }
+    public function items(){
+        return $this->hasMany("\App\Models\ObjectsArticles", "object_id");
+    }
+    public function get_items(){
+        return $this->items()->get();
+    }
 }
