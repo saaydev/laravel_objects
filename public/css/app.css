@@ -1,0 +1,24 @@
+.panel {
+  color: black;
+}
+
+.delete {
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  font-size: 13px;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: 0.2s;
+}
+.delete:hover {
+  color: white;
+  background: #8f0000;
+}
+
+.menu {
+  display: grid;
+  grid-auto-rows: -webkit-max-content;
+  grid-auto-rows: max-content;
+  gap: 5px;
+}
