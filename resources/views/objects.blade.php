@@ -14,6 +14,14 @@
                 <form method="post" action="{{ route("object-create") }}">
                     @csrf
                     <h2>Создать Обьект</h2>
+
+                    @if($errors)
+                        @foreach ($errors->all() as $error)
+                            <div class="alert alert-danger" role="alert">
+                                {{ $error }}
+                            </div>
+                        @endforeach
+                    @endif
         
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Название обьекта</label>
@@ -48,11 +56,11 @@
                                 <td>{{ $item->title }}</td>
                                 <td>{{ $item->type }}</td>
                                 <td>
-                                    <a href="{{ route("delete", ["id" => $item->id, "type" => $item->type]) }}" class="delete">Удалить</a>
+                                    <a href="{{ route("edit", ["id" => $item->id]) }}" class="action action-edit">Настроить</a>
+                                    <a href="{{ route("delete", ["id" => $item->id]) }}" class="action action-delete">Удалить</a>
                                 </td>
                             </tr>
                         @endforeach
-                       
                     </tbody>
                 </table>
             </div>

@@ -46,6 +46,14 @@ Route::get('/', function () {
 });
 
 Route::post('/object-create', function(Request $request){
+    $request["type"] = Str::slug($request->input("type"));
+    $request->validate([
+        "type" => "required|unique:objects",
+        "title" => "required",
+    ],[
+        "type.unique" => "Тип должен быть уникальным",
+    ]);
+    
     $object = new Objects([
         "title" => $request->input("title"),
         "type" => $request->input("type"),
@@ -53,6 +61,26 @@ Route::post('/object-create', function(Request $request){
     $object->save();
     return redirect("/");
 })->name("object-create");
+
+Route::match(["get", "post"], "/edit/{id}", function(Request $request, $id){
+    $item = Objects::where("id", $id)->first();
+    if($request->isMethod("get")){
+        $menu = Objects::get();
+        return view("objects-edit", compact("item", "menu"));
+    }
+    else{
+        if(!$item->type == $request->input("type")){
+            $request["type"] = Str::slug($request->input("type"));
+            $request->validate([
+                "type" => "required|unique:objects",
+            ], [
+                "type.unique" => "Тип должен быть уникальным",
+            ]);
+        }
+        $item->update($request->input());
+        return redirect()->back()->with("message", "Обновлено: " . $request->input("title"));
+    }
+})->name("edit");
 
 Route::get('/delete/{id}', function(Request $request, $id){
     Objects::where("id", $id)->delete();
